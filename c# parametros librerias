@@ -1,4 +1,22 @@
 ///simple conexion string
+
+
+<configuration>
+
+  <connectionStrings>
+    <!--<add name="EntityConecctionString" connectionString="Data Source=FENIX;Initial Catalog=Company01_SYSEN; User ID=dbInstall; Password=4rfv5tgb^YHN&amp;UJM;" providerName="System.Data.SqlClient"/>
+    <add name="MembershipConnectionString" connectionString="Data Source=FENIX;Initial Catalog=EntityUsers; User ID=sa;Password=P@ss(0)d!;" providerName="System.Data.SqlClient"/>
+    <add name="DeploymentManagerConecctionString" connectionString="Data Source=FENIX;Initial Catalog=SYSEN_CONFIG;User ID=sa;Password=P@ss(0)d!;" providerName="System.Data.SqlClient"/>-->
+
+    <add name="EntityConecctionString" connectionString="Data Source=FENIX\SQLEXPRESS;Initial Catalog=company001_SYSEN; User ID=sa;Password=P@ss(0)d!;" providerName="System.Data.SqlClient"/>
+    <add name="MembershipConnectionString" connectionString="Data Source=FENIX\SQLEXPRESS;Initial Catalog=EntityUsers; User ID=sa;Password=P@ss(0)d!;" providerName="System.Data.SqlClient"/>
+    <add name="DeploymentManagerConecctionString" connectionString="Data Source=FENIX\SQLEXPRESS;Initial Catalog=SYSEN_CONFIG;User ID=sa;Password=P@ss(0)d!;" providerName="System.Data.SqlClient"/>
+  </connectionStrings>
+
+
+
+
+
 ///Cparametros
  public class CParametros
     {
