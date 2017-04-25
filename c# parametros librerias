@@ -1,0 +1,46 @@
+///simple conexion string
+///Cparametros
+ public class CParametros
+    {
+        #region variables de connection
+
+        ///public static string strConnectionString = "Data Source=SERVER2008;Initial Catalog=EMPRESA1_SYSEN;Integrated Security=True;Connect Timeout=60;";
+
+        public static string strConnectionString = ConfigurationManager.ConnectionStrings["EntityConecctionString"].ConnectionString;
+
+        public static string strDeploymentManagerConnectionString = ConfigurationManager.ConnectionStrings["DeploymentManagerConecctionString"].ConnectionString;
+
+        public static string strOrganizationName = ConfigurationManager.AppSettings["EntityOrganizationName"];
+
+        public static string strConnectionStringUsers = ConfigurationManager.ConnectionStrings["MembershipConnectionString"].ConnectionString;
+
+        #endregion
+
+        #region variables de connection
+
+        public static string E_Active = "Active";
+
+        public static string E_Inactive = "Inactive";
+
+        #endregion
+        
+     }
+     
+     //////librerias
+     public class CLibrerias
+    {
+        public List<string> MtdListNameProperty()
+        {
+            List<string> lstNameProperty = new List<string>();
+            lstNameProperty.Add("Forms");
+            lstNameProperty.Add("Views");
+            lstNameProperty.Add("Fields");
+            //lstNameProperty.Add("Relations");
+
+            return lstNameProperty;
+        }
+    }
+    
+    
+    
+  
