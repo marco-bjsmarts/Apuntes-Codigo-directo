@@ -1,0 +1,254 @@
+  namespace SystemEntity.Controllers
+{
+    public class CComponentAttributeData
+    {
+        public int MtdAgregaComponentAttributeDataRetornaId(ComponentAttributeData objComponentAttributeData, ref string strMensajeError)
+        {
+            SqlDataReader rdr = null;
+            SqlConnection strStringConection = null;
+            SqlCommand cmd = null;
+            try
+            {
+                string strConnectionString = CParametros.strConnectionString;
+                strStringConection = new SqlConnection(strConnectionString);
+
+                strStringConection.Open();
+                string insertString = @"insert into ComponentAttributeData
+                                    (Fk_ComponentAttributeId,Fk_ComponentId,KeyValue,Value) 
+                                  output INSERTED.AttributeDataId
+                                  values 
+                                    (@Fk_ComponentAttributeId, @Fk_ComponentId, @KeyValue,@Value)";
+                cmd = new SqlCommand(insertString, strStringConection);
+
+                cmd.Parameters.AddWithValue("@Fk_ComponentAttributeId", objComponentAttributeData.Fk_ComponentAttributeId);
+                cmd.Parameters.AddWithValue("@Fk_ComponentId", objComponentAttributeData.Fk_ComponentId);
+                cmd.Parameters.AddWithValue("@KeyValue", objComponentAttributeData.KeyValue);
+                cmd.Parameters.AddWithValue("@Value", objComponentAttributeData.Value);
+
+
+                cmd.CommandType = CommandType.Text;
+                int modified = (int)cmd.ExecuteScalar();
+                //cmd.ExecuteNonQuery();
+                strStringConection.Close();
+
+                return modified;
+            }
+            catch (SqlException sqlex)
+            {
+                strMensajeError = "SQL Error has occurred: " + sqlex.Message;
+            }
+            catch (Exception ex)
+            {
+                strMensajeError = "CComponentsAttributedata(MtdAgregaComponentAttributeDataRetornaId): " + ex.Message;
+            }
+            finally
+            {
+                // Close data reader object and database connection
+                if (rdr != null)
+                    rdr.Close();
+
+                if (strStringConection != null)
+                    strStringConection.Close();
+            }
+            return 0;
+        }
+
+        public bool MtdModificarComponentAttributeData(ComponentAttributeData objComponentAttributeData, ref string strMensajeError)
+        {
+            SqlDataReader rdr = null;
+            SqlConnection strStringConection = null;
+            SqlCommand cmd = null;
+            try
+            {
+                string strConnectionString = CParametros.strConnectionString;
+                strStringConection = new SqlConnection(strConnectionString);
+
+                strStringConection.Open();
+
+                string updateString = @"Update ComponentAttributeData 
+                                    Set Value = @Value 
+                                    Where AttributeDataId = @AttributeDataId";
+
+                cmd = new SqlCommand(updateString, strStringConection);
+
+                cmd.Parameters.AddWithValue("@Value", objComponentAttributeData.Value);
+
+                cmd.Parameters.AddWithValue("@AttributeDataId", objComponentAttributeData.AttributeDataId);
+
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteScalar();
+                //cmd.ExecuteNonQuery();
+                strStringConection.Close();
+
+                return true;
+            }
+            catch (SqlException sqlex)
+            {
+                strMensajeError = "SQL Error has occurred: " + sqlex.Message;
+            }
+            catch (Exception ex)
+            {
+                strMensajeError = "CComponentsAttribute(MtdModificarComponentAttributeData): " + ex.Message;
+            }
+            finally
+            {
+                // Close data reader object and database connection
+                if (rdr != null)
+                    rdr.Close();
+
+                if (strStringConection != null)
+                    strStringConection.Close();
+            }
+            return false;
+        }
+
+        public List<ComponentAttributeData> MtdGetListByComponentId(int intComponentId, ref string strMensajeError)
+        {
+            SqlDataReader rdr = null;
+            SqlConnection strStringConection = null;
+            SqlCommand cmd = null;
+            try
+            {
+                string strConnectionString = CParametros.strConnectionString;
+
+                strStringConection = new SqlConnection(strConnectionString);
+                var lstComponentAttributeData = new List<ComponentAttributeData>();
+
+                strStringConection.Open();
+                cmd = new SqlCommand("SELECT * FROM ComponentAttributeData Where Fk_ComponentId = @Fk_ComponentId", strStringConection);
+                cmd.Parameters.AddWithValue("@Fk_ComponentId", intComponentId);
+                cmd.CommandType = CommandType.Text;
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    lstComponentAttributeData.Add(new ComponentAttributeData
+                    {
+                        AttributeDataId = Convert.ToInt32(rdr["AttributeDataId"].ToString().Trim()),
+                        Fk_ComponentAttributeId = Convert.ToInt32(rdr["Fk_ComponentAttributeId"].ToString().Trim()),
+                        Fk_ComponentId = Convert.ToInt32(rdr["Fk_ComponentId"].ToString().Trim()),
+                        KeyValue = rdr["KeyValue"].ToString().Trim(),
+                        Value = rdr["Value"].ToString().Trim(),
+                    });
+                }
+                rdr.Close();
+                return lstComponentAttributeData;
+            }
+            catch (SqlException sqlex)
+            {
+                strMensajeError = "SQL Error has occurred: " + sqlex.Message;
+            }
+            catch (Exception ex)
+            {
+                strMensajeError = "CComponentAttributeData(MtdGetListByComponentId): " + ex.Message;
+            }
+            finally
+            {
+                // Close data reader object and database connection
+                if (rdr != null)
+                    rdr.Close();
+
+                if (strStringConection != null)
+                    strStringConection.Close();
+            }
+            return null;
+        }
+
+        public string MtdGetValueAttributeDataByComponentAttributeId(int intComponentAttributeId, ref string strMensajeError)
+        {
+            SqlDataReader rdr = null;
+            SqlConnection strStringConection = null;
+            SqlCommand cmd = null;
+            try
+            {
+                string strConnectionString = CParametros.strConnectionString;
+
+                strStringConection = new SqlConnection(strConnectionString);
+                var strValue = string.Empty;
+
+                strStringConection.Open();
+                cmd = new SqlCommand("SELECT Value FROM ComponentAttributeData Where Fk_ComponentAttributeId = @Fk_ComponentAttributeId", strStringConection);
+                cmd.Parameters.AddWithValue("@Fk_ComponentAttributeId", intComponentAttributeId);
+                cmd.CommandType = CommandType.Text;
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+
+                    strValue = rdr["Value"].ToString().Trim();
+                }
+                rdr.Close();
+                return strValue;
+            }
+            catch (SqlException sqlex)
+            {
+                strMensajeError = "SQL Error has occurred: " + sqlex.Message;
+            }
+            catch (Exception ex)
+            {
+                strMensajeError = "CComponentAttributeData(MtdGetDataOptionSetTwoOptionByComponentAttributeId): " + ex.Message;
+            }
+            finally
+            {
+                // Close data reader object and database connection
+                if (rdr != null)
+                    rdr.Close();
+
+                if (strStringConection != null)
+                    strStringConection.Close();
+            }
+            return null;
+        }
+
+        public ComponentAttributeData MtdGetItemByComponentAttributeId(int intComponentAttributeId, ref string strMensajeError)
+        {
+            SqlDataReader rdr = null;
+            SqlConnection strStringConection = null;
+            SqlCommand cmd = null;
+            try
+            {
+                string strConnectionString = CParametros.strConnectionString;
+
+                strStringConection = new SqlConnection(strConnectionString);
+                var objComponentAttributeData = new ComponentAttributeData();
+
+                strStringConection.Open();
+                cmd = new SqlCommand("SELECT * FROM ComponentAttributeData Where Fk_ComponentAttributeId = @Fk_ComponentAttributeId", strStringConection);
+                cmd.Parameters.AddWithValue("@Fk_ComponentAttributeId", intComponentAttributeId);
+                cmd.CommandType = CommandType.Text;
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    objComponentAttributeData.AttributeDataId = Convert.ToInt32(rdr["AttributeDataId"].ToString().Trim());
+                    objComponentAttributeData.Fk_ComponentAttributeId = Convert.ToInt32(rdr["Fk_ComponentAttributeId"].ToString().Trim());
+                    objComponentAttributeData.Fk_ComponentId = Convert.ToInt32(rdr["Fk_ComponentId"].ToString().Trim());
+                    objComponentAttributeData.KeyValue = rdr["KeyValue"].ToString().Trim();
+                    objComponentAttributeData.Value = rdr["Value"].ToString().Trim();
+                    
+
+                }
+                rdr.Close();
+                return objComponentAttributeData;
+            }
+            catch (SqlException sqlex)
+            {
+                strMensajeError = "SQL Error has occurred: " + sqlex.Message;
+            }
+            catch (Exception ex)
+            {
+                strMensajeError = "CComponentAttributeData(MtdGetItemByComponentId): " + ex.Message;
+            }
+            finally
+            {
+                // Close data reader object and database connection
+                if (rdr != null)
+                    rdr.Close();
+
+                if (strStringConection != null)
+                    strStringConection.Close();
+            }
+            return null;
+        }
+    }
+}
